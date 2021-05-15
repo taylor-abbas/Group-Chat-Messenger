@@ -1,4 +1,3 @@
-
 import java.util.Vector;
 import java.util.Queue;
 import java.util.concurrent.TimeUnit;
@@ -49,6 +48,7 @@ public class Server extends JFrame {
         });
         add(userMessage, BorderLayout.SOUTH); // userMessage gets added at SOUTH / BASE
         chatBox = new JTextArea();
+        chatBox.setEditable(false);
         add(new JScrollPane(chatBox));
         setSize(500, 300);
         setVisible(true);
