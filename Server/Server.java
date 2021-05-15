@@ -39,10 +39,11 @@ public class Server extends JFrame {
         super("Messenger Server");
         userMessage = new JTextField();
         userMessage.setEditable(false);
-        userMessage.setText("For Instructions => type <!Instructions> without brackets");
+        userMessage.setText("Connect upto 100 clients and chat :)");
         userMessage.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 sendMessage(event.getActionCommand());
+                // sendMessage(userMessage.getText());
                 userMessage.setText(""); // after every text input box is cleared
             }
         });
@@ -66,7 +67,7 @@ public class Server extends JFrame {
                     // setupStreams();
                     // whileChatting();
                 } catch (EOFException eofException) {
-                    showMessage("\n Server ended the connection!");
+                    showMessage("\nServer ended the connection!");
                 } finally {
                     closeAll();
                 }
@@ -119,20 +120,22 @@ public class Server extends JFrame {
             try {
                 message = (String) input.readObject(); // reads from inputstream
                 System.out.println("message " + message);
-                showMessage("\n" + message);
+                showMessage(message);
             } catch (ClassNotFoundException classNotFoundException) {
                 showMessage("\nError recieving message from user.");
             }
-        } while (!message.equals("\nUSER >> END"));
+        } while (message.substring(message.length() - 3, message.length()) != "END");
     }
 
     public void sendMessage(String message) {
         try {
+            if (message == null)
+                message = "";
             output.writeObject("ADMIN >> " + message); // written into the output stream
             output.flush(); // flushes to inputstream of client
             showMessage("\nADMIN >> " + message);
-        } catch (IOException ioException) {
-            chatBox.append("\nError: Can't send that message");
+        } catch (Exception e) {
+            chatBox.append("\nConnect multiple Clients to communicate. Server is not meant to send messages.");
         }
     }
 
@@ -150,7 +153,7 @@ public class Server extends JFrame {
     public void showMessage(final String message) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                chatBox.append(message);
+                chatBox.append("\n" + message);
                 for (int i = 0; i < Deliverables.size(); i++) {
                     Queue<String> temp = Deliverables.get(i);
                     temp.add(message);
@@ -194,20 +197,23 @@ class ClientHandler extends Thread {
         t.start();
         try {
             // whileChatting();
+            if (i < 10)
+                oos.writeObject("@#$%^YourNameIs0" + i);
+            else
+                oos.writeObject("@#$%^YourNameIs" + i);
             String message = "\nConnected to " + clientSocket.getInetAddress().getHostName();
             s.showMessage(message);
-            s.ableToType(true);
             do {
                 try {
                     message = (String) ois.readObject(); // reads from inputstream
-                    s.showMessage("\n" + message);
-                    sendMessage();
+                    s.showMessage(message);
+                    // sendMessage();
                 } catch (ClassNotFoundException classNotFoundException) {
                     s.showMessage("\nError recieving message from user.");
                 } catch (IOException ioException) {
                     s.showMessage("\nError recieving message from user.");
                 }
-            } while (!message.equals("\nUSER >> END"));
+            } while (message.substring(message.length() - 3, message.length()) != "END");
         } catch (Exception IOException) {
             System.out.println("Error in run of thread " + i);
         }
@@ -268,7 +274,7 @@ class ClientMessenger extends Thread {
                 TimeUnit.SECONDS.sleep(1);
             }
         } catch (Exception e) {
-            System.out.println("error in client messenger " + i);
+            System.out.println("\nerror in client messenger " + i);
         }
     }
 }

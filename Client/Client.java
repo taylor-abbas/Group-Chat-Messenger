@@ -21,7 +21,7 @@ public class Client extends JFrame {
     private ObjectOutputStream output;
     private ObjectInputStream input;
     private String message = "";
-    private String serverIP;
+    private String serverIP, name = "USER";
     private Socket servSocket;
 
     public Client(String host) {
@@ -52,7 +52,7 @@ public class Client extends JFrame {
             setupStreams();
             whileChatting();
         } catch (EOFException eofException) {
-            showMessage("\n Client terminated the connection");
+            showMessage("\nClient terminated the connection");
 
         } catch (IOException ioException) {
             ioException.printStackTrace();
@@ -81,11 +81,11 @@ public class Client extends JFrame {
         do {
             try {
                 message = (String) input.readObject();
-                showMessage("\n" + message);
+                showMessage(message);
             } catch (ClassNotFoundException classNotFoundException) {
                 showMessage("\nObjectType unkown!");
             }
-        } while (!message.equals("\nADMIN >> END"));
+        } while (!message.equals("ADMIN >> END"));
     }
 
     private void closeAll() {
@@ -102,9 +102,9 @@ public class Client extends JFrame {
 
     private void sendMessage(String message) {
         try {
-            output.writeObject("USER >> " + message);
+            output.writeObject(name + " >> " + message);
             output.flush();
-            // showMessage("\nUSER >> " + message);
+            // showMessage("\n"+ name + ">> " + message);
         } catch (IOException ioException) {
             chatBox.append("\nIO Error: Something is messed up!");
         }
@@ -114,7 +114,15 @@ public class Client extends JFrame {
     private void showMessage(final String message) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                chatBox.append(message);
+                System.out.println(message);
+                String check = "";
+                if (message.length() > 16)
+                    check = message.substring(0, 15);
+                if (check.equals("@#$%^YourNameIs")) {
+                    name = "USER" + message.substring(15, 17);
+                    System.out.println("name is changed to " + name);
+                } else
+                    chatBox.append("\n" + message);
             }
         });
     }
