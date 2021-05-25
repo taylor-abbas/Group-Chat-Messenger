@@ -1,6 +1,6 @@
 ## What is Basic Java MultiClient Messenger ?
 
-A basic Java application based on GUI, Sockets, Streams and Threads made as a college mini-project.
+A basic Java application based on GUI, Sockets, Streams and Threads made as a college mini-project. The main focus of this project was to understand and implement multi-threading for the server to be able to handle multiple-clients alongside accepting newer clients joining.
 
 ## How to run:
 
