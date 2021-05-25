@@ -3,6 +3,8 @@ import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 import java.util.PriorityQueue;
 import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.EOFException;
@@ -56,6 +58,26 @@ public class Server extends JFrame {
     }
 
     public void startRunning() {
+
+        // change Frontend of the JTextArea and JTextFrame
+        try {
+            chatBox.setLineWrap(true);
+
+            // Sets JTextArea font and color.
+            Font font = new Font("Franklin Gothic Medium", Font.PLAIN, 14);
+            chatBox.setFont(font);
+            userMessage.setFont(font);
+
+            // bg color
+            Color color = new Color(192, 237, 199);
+            // Set JTextArea background color to color that you choose
+            chatBox.setBackground(color);
+
+            System.out.println("Successfully updated the frontend");
+        } catch (Exception e) {
+            System.out.println("Exceptions in the frontend occured");
+        }
+
         try {
             server = new ServerSocket(6789, 100); // backlog*****
             // can be used to set a timeout for the .accept() method

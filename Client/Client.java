@@ -1,6 +1,8 @@
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.Font;
+import java.awt.Color;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -46,6 +48,24 @@ public class Client extends JFrame {
 
     public void startRunning() {
 
+        // change Frontend of the JTextArea and JTextFrame
+        try {
+            chatBox.setLineWrap(true);
+
+            // Sets JTextArea font and color.
+            Font font = new Font("Franklin Gothic Medium", Font.PLAIN, 14);
+            chatBox.setFont(font);
+            userMessage.setFont(font);
+
+            // bg color
+            Color color = new Color(224, 228, 255);
+            // Set JTextArea background color to color that you choose
+            chatBox.setBackground(color);
+
+            System.out.println("Successfully updated the frontend");
+        } catch (Exception e) {
+            System.out.println("Exceptions in the frontend occured");
+        }
         try {
             this.setLocation(510, 0);
             connectToServer();
