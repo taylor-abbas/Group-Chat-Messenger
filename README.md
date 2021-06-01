@@ -9,3 +9,7 @@ A basic Java application based on GUI, Sockets, Streams and Threads made as a co
 3. Then, run ClientTest.java from Client project.
 4. Send and receive messages from Client to Client by running multiple clients.
 5. Use "END" string in any of the windows to close Connection.
+
+## Tech Stack:
+
+* Core Java
